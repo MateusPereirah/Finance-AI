@@ -1,13 +1,32 @@
 "use client";
 
-import { Badge } from "@/app/_components/ui/badge";
-import { Transaction, TransactionType } from "@prisma/client";
+import { Transaction, TransactionCategory } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { CircleIcon } from "lucide-react";
 import TransactionTypeBadge from "../_components/type-badge";
+import { Button } from "@/app/_components/ui/button";
+import { icons, PencilIcon, TrashIcon } from "lucide-react";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+export const transactionCategoryMap = {
+  [TransactionCategory.HOUSING]: "Moradia",
+  [TransactionCategory.EDUCATION]: "Educação",
+  [TransactionCategory.ENTERTAINMENT]: "Entretenimento",
+  [TransactionCategory.FOOD]: "Alimentação",
+  [TransactionCategory.HEALTH]: "Saúde",
+  [TransactionCategory.OTHER]: "Outro",
+  [TransactionCategory.SALARY]: "Salário",
+  [TransactionCategory.TRANSPORTATION]: "Transporte",
+  [TransactionCategory.UTILITY]: "Utilidades",
+};
+
+export const transactionPaymentMethod = {
+  BANK_TRANSFER: "Transferência Bancária",
+  BANK_SLIP: "Boleto Bancário",
+  CASH: "Dinheiro",
+  CREDIT_CARD: "Cartão de Crédito",
+  DEBIT_CARD: "Cartão de débito",
+  OTHER: "Outros",
+  PIX: "Pix",
+};
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
@@ -24,21 +43,48 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "category",
     header: "Categoria",
+    cell: ({ row: { original: transaction } }) =>
+      transactionCategoryMap[transaction.category],
   },
   {
     accessorKey: "paymentMethod",
     header: "Método",
+    cell: ({ row: { original: transaction } }) =>
+      transactionPaymentMethod[transaction.paymentMethod],
   },
   {
     accessorKey: "date",
     header: "Data",
+    cell: ({ row: { original: transaction } }) =>
+      new Date(transaction.date).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
   },
   {
     accessorKey: "amount",
     header: "Valor",
+    cell: ({ row: { original: transaction } }) =>
+      new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(Number(transaction.amount)),
   },
   {
     accessorKey: "actions",
-    header: "",
+    header: "Ações",
+    cell: () => {
+      return (
+        <div className="space-x-1">
+          <Button variant="ghost" size="icon" className="text-muted-foreground">
+            <PencilIcon />
+          </Button>
+          <Button variant="ghost" size="icon" className="text-muted-foreground">
+            <TrashIcon />
+          </Button>
+        </div>
+      );
+    },
   },
 ];
