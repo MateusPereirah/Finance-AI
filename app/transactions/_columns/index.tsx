@@ -7,7 +7,6 @@ import { Button } from "@/app/_components/ui/button";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import {
   transactionCategoryMap,
-  transactionPaymentMethod,
   transactionPaymentMethodMap,
 } from "@/app/_constants/transactions";
 
