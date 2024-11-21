@@ -4,29 +4,12 @@ import { Transaction, TransactionCategory } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import TransactionTypeBadge from "../_components/type-badge";
 import { Button } from "@/app/_components/ui/button";
-import { icons, PencilIcon, TrashIcon } from "lucide-react";
-
-export const transactionCategoryMap = {
-  [TransactionCategory.HOUSING]: "Moradia",
-  [TransactionCategory.EDUCATION]: "Educação",
-  [TransactionCategory.ENTERTAINMENT]: "Entretenimento",
-  [TransactionCategory.FOOD]: "Alimentação",
-  [TransactionCategory.HEALTH]: "Saúde",
-  [TransactionCategory.OTHER]: "Outro",
-  [TransactionCategory.SALARY]: "Salário",
-  [TransactionCategory.TRANSPORTATION]: "Transporte",
-  [TransactionCategory.UTILITY]: "Utilidades",
-};
-
-export const transactionPaymentMethod = {
-  BANK_TRANSFER: "Transferência Bancária",
-  BANK_SLIP: "Boleto Bancário",
-  CASH: "Dinheiro",
-  CREDIT_CARD: "Cartão de Crédito",
-  DEBIT_CARD: "Cartão de débito",
-  OTHER: "Outros",
-  PIX: "Pix",
-};
+import { PencilIcon, TrashIcon } from "lucide-react";
+import {
+  transactionCategoryMap,
+  transactionPaymentMethod,
+  transactionPaymentMethodMap,
+} from "@/app/_constants/transactions";
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
@@ -50,7 +33,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     accessorKey: "paymentMethod",
     header: "Método",
     cell: ({ row: { original: transaction } }) =>
-      transactionPaymentMethod[transaction.paymentMethod],
+      transactionPaymentMethodMap[transaction.paymentMethod],
   },
   {
     accessorKey: "date",
